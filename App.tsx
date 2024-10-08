@@ -4,6 +4,7 @@ import {
   useFonts,
 } from "@expo-google-fonts/roboto";
 import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ThemeProvider } from "styled-components/native";
 import { Loading } from "./src/components/Loading";
 import { Routes } from "./src/routes";
@@ -18,8 +19,10 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <StatusBar style="light" translucent backgroundColor="transparent" />
-      <Routes />
+      <SafeAreaProvider>
+        <StatusBar style="light" translucent backgroundColor="transparent" />
+        <Routes />
+      </SafeAreaProvider>
     </ThemeProvider>
   );
 }

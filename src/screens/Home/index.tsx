@@ -1,0 +1,10 @@
+import React from "react";
+import { HomeHeader } from "./components/Header";
+import { Container } from "./styles";
+export function Home() {
+  return (
+    <Container>
+      <HomeHeader />
+    </Container>
+  );
+}

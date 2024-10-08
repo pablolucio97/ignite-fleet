@@ -1,11 +1,11 @@
 import { IOS_CLIENT_ID, WEB_CLIENT_ID } from "@env";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { useState } from "react";
+import { Button } from "../../components/Button";
 import backgroundImg from "../assets/background.png";
-import { Button } from "../components/Button";
 import { Container, Slogan, Title } from "./styles";
 
-export function Home() {
+export function SignIn() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   GoogleSignin.configure({
