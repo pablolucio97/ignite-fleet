@@ -5,7 +5,7 @@ import backgroundImg from "../assets/background.png";
 import { Button } from "../components/Button";
 import { Container, Slogan, Title } from "./styles";
 
-export function SignIn() {
+export function Home() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   GoogleSignin.configure({
