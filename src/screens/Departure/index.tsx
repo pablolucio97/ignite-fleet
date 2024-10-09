@@ -1,5 +1,6 @@
 import { Header } from "../../components/Header";
 import { LicensePlateInput } from "../../components/LicensePlate";
+import { TextAreaInput } from "../../components/TextAreaInput";
 import { Container, Content } from "./styles";
 export function Departure() {
   return (
@@ -7,6 +8,10 @@ export function Departure() {
       <Header title="Saída" />
       <Content>
         <LicensePlateInput label="Placa do veículo" placeholder="BRA1234" />
+        <TextAreaInput
+          label="Finalizade"
+          placeholder="Vou utilizar o veículo para..."
+        />
       </Content>
     </Container>
   );
