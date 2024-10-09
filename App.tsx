@@ -19,7 +19,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <SafeAreaProvider>
+      <SafeAreaProvider style={{ backgroundColor: theme.COLORS.GRAY_800 }}>
         <StatusBar style="light" translucent backgroundColor="transparent" />
         <Routes />
       </SafeAreaProvider>
