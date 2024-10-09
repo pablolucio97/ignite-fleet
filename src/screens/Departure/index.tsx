@@ -11,6 +11,7 @@ import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { LicensePlateInput } from "../../components/LicensePlate";
 import { TextAreaInput } from "../../components/TextAreaInput";
+import { getAddressLocation } from "../../utils/getAddressLocation";
 import { licensePlateValidate } from "../../utils/licensePlateValidate";
 import { Container, Content, Message } from "./styles";
 
@@ -39,7 +40,9 @@ export function Departure() {
         timeInterval: 1000,
       },
       (location) => {
-        console.log(location.coords);
+        getAddressLocation(location.coords).then((address) =>
+          console.log(address)
+        );
       }
     ).then((response) => (subscription = response));
     return () => subscription.remove();
