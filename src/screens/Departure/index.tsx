@@ -1,11 +1,6 @@
 import { useRef, useState } from "react";
-import {
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  TextInput,
-} from "react-native";
+import { Alert, ScrollView, TextInput } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { LicensePlateInput } from "../../components/LicensePlate";
@@ -19,8 +14,6 @@ export function Departure() {
 
   const descriptionRef = useRef<TextInput>(null);
   const licensePlateRef = useRef<TextInput>(null);
-  const keyboardAvoidingViewBehavior =
-    Platform.OS === "android" ? "height" : "position";
 
   function handleDepartureRegister() {
     if (!licensePlateValidate(licensePlate)) {
@@ -30,18 +23,19 @@ export function Departure() {
         "A placa é inválida. Por favor, informa a placa correta."
       );
     }
-    if(description.trim().length === 0) {
-        descriptionRef.current?.focus();
-        return Alert.alert('Finalidade', 'Por favor, informe a finalidade da utilização do veículo')
-      }
+    if (description.trim().length === 0) {
+      descriptionRef.current?.focus();
+      return Alert.alert(
+        "Finalidade",
+        "Por favor, informe a finalidade da utilização do veículo"
+      );
+    }
   }
 
   return (
     <Container>
       <Header title="Saída" />
-      <KeyboardAvoidingView
-        behavior={keyboardAvoidingViewBehavior}
-      >
+      <KeyboardAwareScrollView extraHeight={300}>
         <ScrollView>
           <Content>
             <LicensePlateInput
@@ -60,10 +54,10 @@ export function Departure() {
               blurOnSubmit
               onChangeText={setDescription}
             />
-            <Button title="Registar Saída" onPress={handleDepartureRegister}/>
+            <Button title="Registar Saída" onPress={handleDepartureRegister} />
           </Content>
         </ScrollView>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     </Container>
   );
 }
