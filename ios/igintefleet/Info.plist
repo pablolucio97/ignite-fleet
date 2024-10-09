@@ -28,7 +28,6 @@
         <key>CFBundleURLSchemes</key>
         <array>
           <string>com.pablosilva.ignitefleet</string>
-          <string>com.googleusercontent.apps.120211246285-ldbepihqv2i0b0r7k18a818fv3abnh34</string>
         </array>
       </dict>
     </array>
@@ -49,6 +48,12 @@
         </dict>
       </dict>
     </dict>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to use your location.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your location</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your location</string>
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>
     <key>UIRequiredDeviceCapabilities</key>

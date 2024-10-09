@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { useForegroundPermissions } from "expo-location";
+import { useEffect, useRef, useState } from "react";
 import { Alert, ScrollView, TextInput } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Button } from "../../components/Button";
@@ -6,7 +7,7 @@ import { Header } from "../../components/Header";
 import { LicensePlateInput } from "../../components/LicensePlate";
 import { TextAreaInput } from "../../components/TextAreaInput";
 import { licensePlateValidate } from "../../utils/licensePlateValidate";
-import { Container, Content } from "./styles";
+import { Container, Content, Message } from "./styles";
 
 export function Departure() {
   const [description, setDescription] = useState("");
@@ -14,6 +15,26 @@ export function Departure() {
 
   const descriptionRef = useRef<TextInput>(null);
   const licensePlateRef = useRef<TextInput>(null);
+
+  const [locationForegroundPermission, requestLocationForegroundPermission] =
+    useForegroundPermissions();
+
+  useEffect(() => {
+    requestLocationForegroundPermission();
+  }, []);
+
+  if (!locationForegroundPermission?.granted) {
+    return (
+      <Container>
+        <Header title="Saída" />
+        <Message>
+          Você precisa permitir que o aplicativo tenha acesso a localização para
+          acessar essa funcionalidade. Por favor, acesse as configurações do seu
+          dispositivo para conceder a permissão ao aplicativo.
+        </Message>
+      </Container>
+    );
+  }
 
   function handleDepartureRegister() {
     if (!licensePlateValidate(licensePlate)) {
