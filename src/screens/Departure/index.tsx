@@ -1,5 +1,6 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
+  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -9,21 +10,32 @@ import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { LicensePlateInput } from "../../components/LicensePlate";
 import { TextAreaInput } from "../../components/TextAreaInput";
+import { licensePlateValidate } from "../../utils/licensePlateValidate";
 import { Container, Content } from "./styles";
+
 export function Departure() {
+  const [description, setDescription] = useState("");
+  const [licensePlate, setLicensePlate] = useState("");
+
   const descriptionRefInput = useRef<TextInput>(null);
+  const licensePlateRef = useRef<TextInput>(null);
   const keyboardAvoidingViewBehavior =
     Platform.OS === "android" ? "height" : "position";
 
   function handleDepartureRegister() {
-    console.log("OK!");
+    if (!licensePlateValidate(licensePlate)) {
+      licensePlateRef.current?.focus();
+      return Alert.alert(
+        "Placa inválida",
+        "A placa é inválida. Por favor, informa a placa correta."
+      );
+    }
   }
 
   return (
     <Container>
       <Header title="Saída" />
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
         behavior={keyboardAvoidingViewBehavior}
       >
         <ScrollView>
@@ -33,6 +45,7 @@ export function Departure() {
               placeholder="BRA1234"
               onSubmitEditing={() => descriptionRefInput.current?.focus()}
               returnKeyType="next"
+              onChangeText={setLicensePlate}
             />
             <TextAreaInput
               ref={descriptionRefInput}
@@ -41,8 +54,9 @@ export function Departure() {
               onSubmitEditing={handleDepartureRegister}
               returnKeyType="send"
               blurOnSubmit
+              onChangeText={setDescription}
             />
-            <Button title="Registar Saída" />
+            <Button title="Registar Saída" onPress={handleDepartureRegister}/>
           </Content>
         </ScrollView>
       </KeyboardAvoidingView>
