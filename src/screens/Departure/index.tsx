@@ -10,6 +10,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { LicensePlateInput } from "../../components/LicensePlate";
+import { Loading } from "../../components/Loading";
 import { TextAreaInput } from "../../components/TextAreaInput";
 import { getAddressLocation } from "../../utils/getAddressLocation";
 import { licensePlateValidate } from "../../utils/licensePlateValidate";
@@ -18,6 +19,7 @@ import { Container, Content, Message } from "./styles";
 export function Departure() {
   const [description, setDescription] = useState("");
   const [licensePlate, setLicensePlate] = useState("");
+  const [isLoadingLocation, setIsLoadingLocation] = useState(true);
 
   const descriptionRef = useRef<TextInput>(null);
   const licensePlateRef = useRef<TextInput>(null);
@@ -44,8 +46,14 @@ export function Departure() {
           console.log(address)
         );
       }
-    ).then((response) => (subscription = response));
-    return () => subscription.remove();
+    )
+      .then((response) => (subscription = response))
+      .finally(() => setIsLoadingLocation(false));
+    return () => {
+      if (subscription) {
+        subscription.remove();
+      }
+    };
   }, [locationForegroundPermission?.granted]);
 
   if (!locationForegroundPermission?.granted) {
@@ -76,6 +84,10 @@ export function Departure() {
         "Por favor, informe a finalidade da utilização do veículo"
       );
     }
+  }
+
+  if (isLoadingLocation) {
+    return <Loading />;
   }
 
   return (
