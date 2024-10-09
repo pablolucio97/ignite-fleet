@@ -4,6 +4,7 @@ import {
   useForegroundPermissions,
   watchPositionAsync,
 } from "expo-location";
+import { CarSimple } from "phosphor-react-native";
 import { useEffect, useRef, useState } from "react";
 import { Alert, ScrollView, TextInput } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -102,6 +103,7 @@ export function Departure() {
           <Content>
             {currentAddress && (
               <LocationInfo
+                icon={CarSimple}
                 label="Localização atual"
                 description={currentAddress}
               />
