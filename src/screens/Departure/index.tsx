@@ -11,6 +11,7 @@ import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { LicensePlateInput } from "../../components/LicensePlate";
 import { Loading } from "../../components/Loading";
+import { LocationInfo } from "../../components/LocationInfo";
 import { TextAreaInput } from "../../components/TextAreaInput";
 import { getAddressLocation } from "../../utils/getAddressLocation";
 import { licensePlateValidate } from "../../utils/licensePlateValidate";
@@ -20,6 +21,7 @@ export function Departure() {
   const [description, setDescription] = useState("");
   const [licensePlate, setLicensePlate] = useState("");
   const [isLoadingLocation, setIsLoadingLocation] = useState(true);
+  const [currentAddress, setCurrentAddress] = useState<string | null>(null);
 
   const descriptionRef = useRef<TextInput>(null);
   const licensePlateRef = useRef<TextInput>(null);
@@ -42,9 +44,11 @@ export function Departure() {
         timeInterval: 1000,
       },
       (location) => {
-        getAddressLocation(location.coords).then((address) =>
-          console.log(address)
-        );
+        getAddressLocation(location.coords).then((address) => {
+          if (address) {
+            setCurrentAddress(address);
+          }
+        });
       }
     )
       .then((response) => (subscription = response))
@@ -96,6 +100,12 @@ export function Departure() {
       <KeyboardAwareScrollView extraHeight={300}>
         <ScrollView>
           <Content>
+            {currentAddress && (
+              <LocationInfo
+                label="Localização atual"
+                description={currentAddress}
+              />
+            )}
             <LicensePlateInput
               label="Placa do veículo"
               placeholder="BRA1234"
