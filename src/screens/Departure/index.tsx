@@ -1,5 +1,6 @@
 import {
   LocationAccuracy,
+  LocationObjectCoords,
   LocationSubscription,
   useForegroundPermissions,
   watchPositionAsync,
@@ -13,6 +14,7 @@ import { Header } from "../../components/Header";
 import { LicensePlateInput } from "../../components/LicensePlate";
 import { Loading } from "../../components/Loading";
 import { LocationInfo } from "../../components/LocationInfo";
+import { Map } from "../../components/Maps";
 import { TextAreaInput } from "../../components/TextAreaInput";
 import { getAddressLocation } from "../../utils/getAddressLocation";
 import { licensePlateValidate } from "../../utils/licensePlateValidate";
@@ -23,6 +25,8 @@ export function Departure() {
   const [licensePlate, setLicensePlate] = useState("");
   const [isLoadingLocation, setIsLoadingLocation] = useState(true);
   const [currentAddress, setCurrentAddress] = useState<string | null>(null);
+  const [currentCoords, setCurrentCoords] =
+    useState<LocationObjectCoords | null>(null);
 
   const descriptionRef = useRef<TextInput>(null);
   const licensePlateRef = useRef<TextInput>(null);
@@ -45,6 +49,7 @@ export function Departure() {
         timeInterval: 1000,
       },
       (location) => {
+        setCurrentCoords(location.coords);
         getAddressLocation(location.coords).then((address) => {
           if (address) {
             setCurrentAddress(address);
@@ -91,6 +96,8 @@ export function Departure() {
     }
   }
 
+
+
   if (isLoadingLocation) {
     return <Loading />;
   }
@@ -99,6 +106,15 @@ export function Departure() {
     <Container>
       <Header title="Saída" />
       <KeyboardAwareScrollView extraHeight={300}>
+        {currentCoords && (
+          <Map
+            coordinates={[
+              { latitude: -19.8240113, longitude: -43.1652822 },
+              { latitude: -19.8228286, longitude: -43.1646838 },
+              { latitude: -19.8270273, longitude: -43.1623234 },
+            ]}
+          />
+        )}
         <ScrollView>
           <Content>
             {currentAddress && (
