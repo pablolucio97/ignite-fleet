@@ -24,6 +24,7 @@ import {
 import { getAddressLocation } from "../../utils/getAddressLocation";
 import { licensePlateValidate } from "../../utils/licensePlateValidate";
 import { Container, Content, Message } from "./styles";
+import { openSettings } from "../../utils/openSettings";
 
 export function Departure() {
   const [description, setDescription] = useState("");
@@ -80,6 +81,7 @@ export function Departure() {
           acessar essa funcionalidade. Por favor, acesse as configurações do seu
           dispositivo para conceder a permissão ao aplicativo.
         </Message>
+        <Button title='Abrir configurações' onPress={openSettings} />
       </Container>
     );
   }
