@@ -2,6 +2,7 @@ import {
   LocationAccuracy,
   LocationObjectCoords,
   LocationSubscription,
+  requestBackgroundPermissionsAsync,
   useForegroundPermissions,
   watchPositionAsync,
 } from "expo-location";
@@ -16,6 +17,10 @@ import { Loading } from "../../components/Loading";
 import { LocationInfo } from "../../components/LocationInfo";
 import { Map } from "../../components/Maps";
 import { TextAreaInput } from "../../components/TextAreaInput";
+import {
+  startLocationTask,
+  stopLocationTask,
+} from "../../tasks/getBackgroundLocation";
 import { getAddressLocation } from "../../utils/getAddressLocation";
 import { licensePlateValidate } from "../../utils/licensePlateValidate";
 import { Container, Content, Message } from "./styles";
@@ -79,7 +84,7 @@ export function Departure() {
     );
   }
 
-  function handleDepartureRegister() {
+  async function handleDepartureRegister() {
     if (!licensePlateValidate(licensePlate)) {
       licensePlateRef.current?.focus();
       return Alert.alert(
@@ -94,12 +99,25 @@ export function Departure() {
         "Por favor, informe a finalidade da utilização do veículo"
       );
     }
+
+    const backgroundPermissions = await requestBackgroundPermissionsAsync();
+
+    if (!backgroundPermissions.granted) {
+      return Alert.alert(
+        "Localização",
+        'É necessário permitir que o App tenha acesso localização em segundo plano. Acesse as configurações do dispositivo e habilite "Permitir o tempo todo."'
+      );
+    }
+
+    await startLocationTask();
   }
-
-
 
   if (isLoadingLocation) {
     return <Loading />;
+  }
+
+  async function handleArrivalRegister() {
+    await stopLocationTask();
   }
 
   return (
@@ -108,11 +126,7 @@ export function Departure() {
       <KeyboardAwareScrollView extraHeight={300}>
         {currentCoords && (
           <Map
-            coordinates={[
-              { latitude: -19.8240113, longitude: -43.1652822 },
-              { latitude: -19.8228286, longitude: -43.1646838 },
-              { latitude: -19.8270273, longitude: -43.1623234 },
-            ]}
+            coordinates={[currentCoords]}
           />
         )}
         <ScrollView>
@@ -141,6 +155,7 @@ export function Departure() {
               onChangeText={setDescription}
             />
             <Button title="Registar Saída" onPress={handleDepartureRegister} />
+            <Button title="Registar Chegada" onPress={handleArrivalRegister} />
           </Content>
         </ScrollView>
       </KeyboardAwareScrollView>
