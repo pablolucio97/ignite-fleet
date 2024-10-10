@@ -5,6 +5,7 @@ import {
   stopLocationUpdatesAsync,
 } from "expo-location";
 import * as TaskManager from "expo-task-manager";
+import { saveStorageLocation } from "../libs/asyncStorage/locationStorage";
 
 export const BACKGROUND_TASK = "location-tracking";
 
@@ -14,17 +15,20 @@ TaskManager.defineTask(BACKGROUND_TASK, ({ data, error }: any) => {
       throw error;
     }
 
-    const { coords, timestamp } = data.locations[0];
+    if (data) {
+      const { coords, timestamp } = data.locations[0];
 
-    const currentLocation = {
-      latitude: coords.latitude,
-      longitude: coords.longitude,
-      timestamp,
-    };
+      const currentLocation = {
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+        timestamp,
+      };
 
-    console.log(currentLocation);
+      saveStorageLocation(currentLocation);
+    }
   } catch (error) {
     console.log(error);
+    stopLocationTask();
   }
 });
 
